@@ -1,23 +1,35 @@
 import { useCart } from "../context/useCart";
 
+
 const CartPage = () => {
-  const { cartItems } = useCart();
+  const { cartItems, removeFromCart } = useCart();
 
   return (
-    <div>
-      <h2>عربة التسوق</h2>
+    <div className="cart-container">
+      <h2 className="cart-title">🛒 عربة التسوق</h2>
       {cartItems.length === 0 ? (
-        <p>العربة فارغة</p>
+        <p className="cart-empty">العربة فارغة</p>
       ) : (
         cartItems.map((item, index) => (
-          <div key={index} style={{ borderBottom: "1px solid #ccc", padding: "10px" }}>
-            <img src={item.img} alt={item.name} width="100" />
-            <h3>{item.name}</h3>
-            <p>{item.price}</p>
-            {item.size && <p>المقاس: {item.size}</p>}
+          <div key={index} className="cart-item">
+            <img src={item.img} alt={item.name} className="cart-item-image" />
+
+            <div className="cart-item-details">
+              <h3 className="cart-item-name">{item.name}</h3>
+              <p className="cart-item-price">{item.price}</p>
+              {item.size && <p className="cart-item-size">المقاس: {item.size}</p>}
+            </div>
+                                      <button
+                className="remove-btn"
+                onClick={() => removeFromCart(index)}
+              >
+              حذف
+              </button>
           </div>
         ))
       )}
+
+        <button class="confirm-order-btn">تأكيد الطلب</button>
     </div>
   );
 };

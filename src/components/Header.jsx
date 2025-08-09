@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <header className="head">
 
-      <h1>Dream Fit</h1>
+      <Link to="/"><h1>Dream Fit</h1></Link>
 
       <div className="icons">
         <Link to="/user"><RxPerson /></Link>

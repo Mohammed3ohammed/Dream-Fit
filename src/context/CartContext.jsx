@@ -12,12 +12,17 @@ export const CartProvider = ({ children }) => {
     setCartItems((prev) => [...prev, product]);
   };
 
+
+  const removeFromCart = (index) => {
+    setCartItems((prev) => prev.filter((_, i) => i !== index));
+  };
+
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
