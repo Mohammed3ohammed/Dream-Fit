@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { useCart } from "../context/useCart";
-
+import ConfirmOrder from "./ConfirmOrder";
+// import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const { cartItems, removeFromCart } = useCart();
+    // const navigate = useNavigate();
+      const [showForm, setShowForm] = useState(false);
+
 
   return (
     <div className="cart-container">
@@ -28,8 +33,20 @@ const CartPage = () => {
           </div>
         ))
       )}
+      <button
+        className="confirm-order-btn"
+        onClick={() => setShowForm(true)}
+      >
+        تأكيد الطلب
+      </button>
 
-        <button class="confirm-order-btn">تأكيد الطلب</button>
+      {showForm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <ConfirmOrder onClose={() => setShowForm(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

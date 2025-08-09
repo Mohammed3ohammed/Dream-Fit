@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Products from "./components/Products";
 import CartPage from "./components/CartPage";
 import { CartProvider } from "./context/CartContext";
+import ConfirmOrder from "./components/ConfirmOrder";
 
 const Layout = () => (
   <>
@@ -22,6 +23,8 @@ const router = createBrowserRouter([
       { index: true, element: <Products /> },
       { path: 'user', element: <User /> },
       { path: 'cart', element: <CartPage /> },
+      { path: '/confirm-order', element: <ConfirmOrder /> }
+
     ],
   },
 ]);
