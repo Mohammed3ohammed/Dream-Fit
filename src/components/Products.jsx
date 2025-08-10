@@ -1,17 +1,56 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../context/useCart";
 
 const Products = () => {
   const products = [
-    { img: "/6_da10268e-3712-467a-a489-475f6660ce3e.webp", name: "تيشيرت رجالي أسود", price: "250 EGP" },
-    { img: "/7_70ccf409-a754-4efd-9ab0-f9f2105ddc10.webp", name: "هودي شتوي رمادي", price: "300 EGP" },
-    { img: "/6_da10268e-3712-467a-a489-475f6660ce3e.webp", name: "تيشيرت رجالي أسود", price: "250 EGP" },
-    { img: "/7_70ccf409-a754-4efd-9ab0-f9f2105ddc10.webp", name: "هودي شتوي رمادي", price: "300 EGP" },
+    { 
+      images: [
+        "/6_da10268e-3712-467a-a489-475f6660ce3e.webp",
+        "/7_70ccf409-a754-4efd-9ab0-f9f2105ddc10.webp",
+      ], 
+      name: "تيشيرت رجالي أسود", 
+      price: "250 EGP" 
+    },
+    { 
+      images: [
+        "/6_da10268e-3712-467a-a489-475f6660ce3e.webp",
+        "/7_70ccf409-a754-4efd-9ab0-f9f2105ddc10.webp",
+      ], 
+      name: "هودي شتوي رمادي", 
+      price: "300 EGP" 
+    },
+    { 
+      images: [
+        "/6_da10268e-3712-467a-a489-475f6660ce3e.webp",
+        "/7_70ccf409-a754-4efd-9ab0-f9f2105ddc10.webp",
+      ], 
+      name: "تيشيرت رجالي أسود", 
+      price: "250 EGP" 
+    },
+    { 
+      images: [
+        "/6_da10268e-3712-467a-a489-475f6660ce3e.webp",
+        "/7_70ccf409-a754-4efd-9ab0-f9f2105ddc10.webp",
+      ], 
+      name: "هودي شتوي رمادي", 
+      price: "300 EGP" 
+    }
   ];
 
   const { addToCart } = useCart();
 
   const [selectedSizes, setSelectedSizes] = useState({});
+   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+ useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSizeSelect = (index, size) => {
     setSelectedSizes((prev) => ({
@@ -36,7 +75,11 @@ const Products = () => {
       {products.map((product, index) => (
         <div key={index} className="product-wrapper">
           <div className="product-card">
-            <img src={product.img} alt={product.name} className="product-image" />
+            <img
+              src={product.images[currentImageIndex]}
+              alt={product.name}
+              className="product-image"
+            />
             <h3 className="product-name">{product.name}</h3>
             <p className="product-price">{product.price}</p>
 

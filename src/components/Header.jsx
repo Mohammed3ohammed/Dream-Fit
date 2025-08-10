@@ -2,6 +2,8 @@ import { RxClipboard, RxPerson } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/useCart";
 
+
+
 const Header = () => {
 
     const { cartItems } = useCart();
@@ -10,6 +12,8 @@ const Header = () => {
     <header className="head">
 
       <Link to="/"><h1>Dream Fit</h1></Link>
+
+
 
       <div className="icons">
         <Link to="/user"><RxPerson /></Link>

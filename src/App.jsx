@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import User from "./components/User";
+import User from "./ui/User";
+import Admin from "./ui/Admin";
 import Header from "./components/Header";
+import Orders from "./components/Orders";
 import Footer from "./components/Footer";
 import Products from "./components/Products";
 import CartPage from "./components/CartPage";
@@ -21,8 +23,10 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Products /> },
-      { path: 'user', element: <User /> },
-      { path: 'cart', element: <CartPage /> },
+      { path: '/user', element: <User /> },
+      { path: '/admin', element: <Admin /> },
+      { path: '/orders', element: <Orders /> },
+      { path: '/cart', element: <CartPage /> },
       { path: '/confirm-order', element: <ConfirmOrder /> }
 
     ],
