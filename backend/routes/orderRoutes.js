@@ -26,6 +26,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+// ✅ جلب كل الطلبات
+router.get("/", async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     const order = await Order.findByIdAndDelete(req.params.id);

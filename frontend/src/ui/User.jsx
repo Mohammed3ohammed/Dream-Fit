@@ -5,7 +5,7 @@ const UserPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch orders from backend
+
   const fetchOrders = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/orders");
@@ -17,7 +17,7 @@ const UserPage = () => {
     }
   };
 
-  // ✅ Delete order by ID
+
   const deleteOrder = async (id) => {
     if (window.confirm("هل أنت متأكد من حذف الطلب؟")) {
       try {
@@ -33,7 +33,7 @@ const UserPage = () => {
     fetchOrders();
   }, []);
 
-  if (loading) return <p>جارِ تحميل الطلبات...</p>;
+  if (loading) return <p className="orders-title">جارِ تحميل الطلبات...</p>;
 
   return (
     <div className="user-orders">

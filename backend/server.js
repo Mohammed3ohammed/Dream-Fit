@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import orderRoutes from "./routes/orderRoutes.js";
-
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
 
 app.get("/api/orders", async (req, res) => {

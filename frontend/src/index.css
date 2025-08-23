@@ -614,8 +614,72 @@ Button {
   object-fit: cover;
 }
 
+/*  */
+
+.admin-orders-page {
+  padding: 20px;
+  direction: rtl; /* علشان النصوص تبقى من اليمين */
+  font-family: "Tajawal", sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.admin-orders-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 26px;
+}
+
+.admin-orders-page table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-orders-page th,
+.admin-orders-page td {
+  padding: 12px 15px;
+  text-align: center;
+  font-size: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-orders-page th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+.admin-orders-page tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.admin-orders-page img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.admin-orders-page p {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: #007bff;
+  font-weight: bold;
+}
 
 
+/*  */
 /*  */
 
 /*  */
