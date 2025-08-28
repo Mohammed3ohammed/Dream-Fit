@@ -43,15 +43,33 @@ const UserPage = () => {
       ) : (
         orders.map((order) => (
           <div key={order._id} className="order-card">
-            <div className="order-header">
-              <h3>طلب بتاريخ: {new Date(order.date).toLocaleString()}</h3>
-              <button
-                className="delete-order-btn"
-                onClick={() => deleteOrder(order._id)}
-              >
-                حذف الطلب ✖
-              </button>
-            </div>
+{/* <div className="order-header">
+  <h3>طلب بتاريخ: {new Date(order.date).toLocaleString()}</h3>
+  {order.status !== "confirmed" && (
+    <button
+      className="delete-order-btn"
+      onClick={() => deleteOrder(order._id)}
+    >
+      حذف الطلب ✖
+    </button>
+  )}
+</div> */}
+
+<div className="order-header">
+  <h3>طلب بتاريخ: {new Date(order.date).toLocaleString()}</h3>
+
+  {order.status === "confirmed" ? (
+    <span className="delivery-status">🚚 خارج للتوصيل</span>
+  ) : (
+    <button
+      className="delete-order-btn"
+      onClick={() => deleteOrder(order._id)}
+    >
+      حذف الطلب ✖
+    </button>
+  )}
+</div>
+
             <p>الاسم: {order.customer.name}</p>
             <p>العنوان: {order.customer.address}</p>
             <p>الهاتف: {order.customer.phone}</p>

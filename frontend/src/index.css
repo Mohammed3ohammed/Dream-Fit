@@ -610,6 +610,14 @@ Button {
   object-fit: cover;
 }
 
+.delivery-status {
+  color: green;
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+
 /*  */
 
 .admin-dashboard {
@@ -640,22 +648,142 @@ img {
   border-radius: 5px;
 }
 
+/*  */
+.add-product-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.add-product-section h2 {
+  margin-bottom: 15px;
+  font-size: 22px;
+  color: #333;
+}
+
+.add-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 400px;
+}
+
 .add-product-form input {
-  margin: 5px;
-  padding: 10px;
-  width: 200px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.add-product-form input:focus {
+  border-color: #4f46e5;
+  outline: none;
 }
 
 .add-product-form button {
-  padding: 10px 15px;
-  background: #28a745;
-  color: white;
+  padding: 12px;
+text-align: center;
+  font-size: 16px;
+  font-weight: bold;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.add-product-form button:hover {
+  background: linear-gradient(90deg, #4338ca, #0891b2);
 }
 
 
 /*  */
+
+
+
+/*  */
+
+.orders-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.orders-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 600px; 
+}
+
+.order-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.product-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+
+.confirm-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.confirm-btn {
+  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(90deg, #4338ca, #0891b2);
+}
+
 
 /*  */
 

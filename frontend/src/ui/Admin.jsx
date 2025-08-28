@@ -40,6 +40,19 @@ const Admin = () => {
     }
   };
 
+const confirmOrder = async (id) => {
+  try {
+    await axios.patch(`http://localhost:5000/api/orders/${id}/status`, {
+      status: "confirmed"
+    });
+    alert("✅ تم تأكيد الطلب بنجاح");
+    fetchOrders(); 
+  } catch (err) {
+    console.error("❌ خطأ في تأكيد الطلب:", err);
+  }
+};
+
+
   const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
@@ -68,47 +81,46 @@ const Admin = () => {
       <h1>لوحة تحكم المدير</h1>
 
 
-      <section className="orders-section">
-        <h2>قائمة الطلبات</h2>
-        {loadingOrders ? (
-          <p>جاري تحميل الطلبات...</p>
-        ) : orders.length === 0 ? (
-          <p>لا توجد طلبات حتى الآن</p>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>العميل</th>
-                <th>الهاتف</th>
-                <th>العنوان</th>
-                <th>المنتج</th>
-                <th>السعر</th>
-                <th>الكمية</th>
-                <th>الصورة</th>
-                <th>التاريخ</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order, i) =>
-                order.products.map((product, j) => (
-                  <tr key={`${i}-${j}`}>
-                    <td>{order.customer.name}</td>
-                    <td>{order.customer.phone}</td>
-                    <td>{order.customer.address}</td>
-                    <td>{product.name}</td>
-                    <td>{product.price} جنيه</td>
-                    <td>{product.quantity || 1}</td>
-                    <td>
-                      <img src={product.img} alt={product.name} width="60" />
-                    </td>
-                    <td>{new Date(order.date).toLocaleString()}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        )}
-      </section>
+<section className="orders-section">
+  <h2>قائمة الطلبات</h2>
+  {loadingOrders ? (
+    <p>جاري تحميل الطلبات...</p>
+  ) : orders.length === 0 ? (
+    <p>لا توجد طلبات حتى الآن</p>
+  ) : (
+    <div className="orders-container">
+      {orders.map((order, i) => (
+        <div className="order-card" key={i}>
+          <div className="order-info">
+            <p><strong>العميل:</strong> {order.customer.name}</p>
+            <p><strong>الهاتف:</strong> {order.customer.phone}</p>
+            <p><strong>العنوان:</strong> {order.customer.address}</p>
+            <p><strong>التاريخ:</strong> {new Date(order.date).toLocaleString()}</p>
+          </div>
+          <div className="products-list">
+            {order.products.map((product, j) => (
+              <div className="product-item" key={j}>
+                <img src={product.img} alt={product.name} />
+                <div>
+                  <p><strong>المنتج:</strong> {product.name}</p>
+                  <p><strong>السعر:</strong> {product.price} جنيه</p>
+                  <p><strong>الكمية:</strong> {product.quantity || 1}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+<div className="confirm-btn-container">
+  {order.status !== "confirmed" && (
+    <button className="confirm-btn" onClick={() => confirmOrder(order._id)}>
+      تأكيد الطلب
+    </button>
+  )}
+</div>
+        </div>
+      ))}
+    </div>
+  )}
+</section>
 
 
       <section className="add-product-section">
@@ -128,13 +140,13 @@ const Admin = () => {
             onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
             required
           />
-      <input
-        type="text"
-        placeholder="رابط الصورة"
-        value={newProduct.img}
-        onChange={(e) => setNewProduct({ ...newProduct, img: e.target.value })}
-        required
-      />
+          <input
+            type="text"
+            placeholder="رابط الصورة"
+            value={newProduct.img}
+            onChange={(e) => setNewProduct({ ...newProduct, img: e.target.value })}
+            required
+          />
 
           <button type="submit">إضافة المنتج</button>
         </form>
