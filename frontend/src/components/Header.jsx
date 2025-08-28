@@ -16,7 +16,7 @@ const Header = () => {
 
 
       <div className="icons">
-        <Link to="/user"><RxPerson /></Link>
+        <Link to="/login"><RxPerson /></Link>
          <div className="cart-icon-wrapper">
           <Link to="/cart">
             <RxClipboard />

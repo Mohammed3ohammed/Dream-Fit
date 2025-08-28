@@ -19,10 +19,12 @@ const ConfirmOrder = ({ onClose }) => {
       return;
     }
 
-    const cleanedProducts = cartItems.map(item => ({
-      ...item,
-      price: parseFloat(item.price.replace(/[^\d.]/g, "")) 
-    }));
+const cleanedProducts = cartItems.map(item => ({
+  ...item,
+  price: typeof item.price === "string"
+    ? parseFloat(item.price.replace(/[^\d.]/g, ""))
+    : item.price
+}));
 
     const order = {
       customer: { name, address, phone },
