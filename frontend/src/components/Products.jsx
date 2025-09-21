@@ -7,7 +7,7 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const { addToCart } = useCart();
   const [selectedSizes, setSelectedSizes] = useState({});
- const [currentIndexes, setCurrentIndexes] = useState({})
+ const [currentIndexes, setCurrentIndexes] = useState({});
 
 
   useEffect(() => {

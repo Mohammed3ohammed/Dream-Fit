@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Logout from "./Logout";
+import { useNavigate } from "react-router-dom";
+
 
 const Admin = () => {
+    const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
@@ -14,39 +18,60 @@ const Admin = () => {
   });
 
   useEffect(() => {
-    fetchOrders();
-    fetchProducts();
-  }, []);
+const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    } else {
+    fetchOrders(token);
+    fetchProducts(token);
+    }
+  }, [navigate]); 
+
+
 
   const fetchOrders = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/orders");
-      setOrders(res.data);
-    } catch (err) {
-      console.error("❌ خطأ في جلب الطلبات:", err);
-    } finally {
-      setLoadingOrders(false);
-    }
-  };
+  try {
+      const token = localStorage.getItem("token");
+    const res = await axios.get("http://localhost:5000/api/orders", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setOrders(res.data);
+  } catch (err) {
+    console.error("❌ خطأ في جلب الطلبات:", err);
+  } finally {
+    setLoadingOrders(false);
+  }
+};
 
-  const fetchProducts = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/products");
-      setProducts(res.data);
-    } catch (err) {
-      console.error("❌ خطأ في جلب المنتجات:", err);
-    } finally {
-      setLoadingProducts(false);
-    }
-  };
+const fetchProducts = async (token) => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/products", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setProducts(res.data);
+  } catch (err) {
+    console.error("❌ خطأ في جلب المنتجات:", err);
+  } finally {
+    setLoadingProducts(false);
+  }
+};
 
 const confirmOrder = async (id) => {
   try {
-    await axios.patch(`http://localhost:5000/api/orders/${id}/status`, {
-      status: "confirmed"
-    });
+    const token = localStorage.getItem("token");
+
+    await axios.patch(
+      `http://localhost:5000/api/orders/${id}/status`,
+      { status: "confirmed" },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
     alert("✅ تم تأكيد الطلب بنجاح");
-    fetchOrders(); 
+    fetchOrders();
   } catch (err) {
     console.error("❌ خطأ في تأكيد الطلب:", err);
   }
@@ -76,6 +101,18 @@ const confirmOrder = async (id) => {
     }
   };
 
+    const deleteOrder = async (id) => {
+      if (window.confirm("هل أنت متأكد من حذف الطلب؟")) {
+        try {
+          await axios.delete(`http://localhost:5000/api/orders/${id}`);
+          setOrders(orders.filter((order) => order._id !== id));
+        } catch (error) {
+          console.error("❌ خطأ أثناء حذف الطلب:", error);
+        }
+      }
+    };
+  
+
   return (
     <div className="admin-dashboard">
       <h1>لوحة تحكم المدير</h1>
@@ -91,6 +128,12 @@ const confirmOrder = async (id) => {
     <div className="orders-container">
       {orders.map((order, i) => (
         <div className="order-card" key={i}>
+              <button
+                    className="delete-order-btn"
+                    onClick={() => deleteOrder(order._id)}
+                  >
+                    حذف الطلب ✖
+               </button>
           <div className="order-info">
             <p><strong>العميل:</strong> {order.customer.name}</p>
             <p><strong>الهاتف:</strong> {order.customer.phone}</p>
@@ -175,7 +218,16 @@ const confirmOrder = async (id) => {
                   <td>{product.name}</td>
                   <td>{product.price} جنيه</td>
                   <td>
-                    <img src={product.img} alt={product.name} width="60" />
+                    {/* <img src={product.img} alt={product.name} width="60" /> */}
+<img
+  src={
+    product.images && product.images.length > 0
+      ? product.images[0] 
+      : product.img || "/placeholder.jpg"  
+  }
+  alt={product.name}
+  width="60"
+/>
                   </td>
                   <td>
                     <button onClick={() => deleteProduct(product._id)}>حذف</button>
@@ -186,8 +238,49 @@ const confirmOrder = async (id) => {
           </table>
         )}
       </section>
+      <div>
+        <Logout />
+      </div>
     </div>
   );
 };
 
 export default Admin;
+
+
+
+
+
+//   useEffect(() => {
+//   const token = localStorage.getItem("token");
+//   const role = localStorage.getItem("role");
+
+//   if (!token || role !== "admin") {
+//     navigate("/login");
+//   } else {
+//     fetchOrders(token);
+//     fetchProducts(token);
+//   }
+// }, [navigate]);
+
+  // const fetchOrders = async () => {
+  //   try {
+  //     const res = await axios.get("http://localhost:5000/api/orders");
+  //     setOrders(res.data);
+  //   } catch (err) {
+  //     console.error("❌ خطأ في جلب الطلبات:", err);
+  //   } finally {
+  //     setLoadingOrders(false);
+  //   }
+  // };
+
+  // const fetchProducts = async () => {
+  //   try {
+  //     const res = await axios.get("http://localhost:5000/api/products");
+  //     setProducts(res.data);
+  //   } catch (err) {
+  //     console.error("❌ خطأ في جلب المنتجات:", err);
+  //   } finally {
+  //     setLoadingProducts(false);
+  //   }
+  // };

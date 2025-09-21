@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Logout from "./Logout";
 
 const UserPage = () => {
   const [orders, setOrders] = useState([]);
@@ -7,27 +8,51 @@ const UserPage = () => {
 
 
   const fetchOrders = async () => {
+try {
+  const token = localStorage.getItem("token");
+
+  const res = await axios.get("http://localhost:5000/api/orders", {
+    headers: {
+      Authorization: `Bearer ${token}`, // ⬅️ بس كده تكفي
+    },
+  });
+
+  setOrders(res.data);
+} catch (error) {
+  console.error("❌ خطأ أثناء جلب الطلبات:", error);
+} finally {
+  setLoading(false);
+}
+
+};
+
+
+  // const deleteOrder = async (id) => {
+  //   if (window.confirm("هل أنت متأكد من حذف الطلب؟")) {
+  //     try {
+  //       await axios.delete(`http://localhost:5000/api/orders/${id}`);
+  //       setOrders(orders.filter((order) => order._id !== id));
+  //     } catch (error) {
+  //       console.error("❌ خطأ أثناء حذف الطلب:", error);
+  //     }
+  //   }
+  // };
+
+    const deleteOrder = async (id) => {
+  if (window.confirm("هل أنت متأكد من حذف الطلب؟")) {
     try {
-      const res = await axios.get("http://localhost:5000/api/orders");
-      setOrders(res.data);
+      const token = localStorage.getItem("token");
+
+      await axios.delete(`http://localhost:5000/api/orders/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setOrders(orders.filter((order) => order._id !== id));
     } catch (error) {
-      console.error("❌ خطأ أثناء جلب الطلبات:", error);
-    } finally {
-      setLoading(false);
+      console.error("❌ خطأ أثناء حذف الطلب:", error);
     }
-  };
-
-
-  const deleteOrder = async (id) => {
-    if (window.confirm("هل أنت متأكد من حذف الطلب؟")) {
-      try {
-        await axios.delete(`http://localhost:5000/api/orders/${id}`);
-        setOrders(orders.filter((order) => order._id !== id));
-      } catch (error) {
-        console.error("❌ خطأ أثناء حذف الطلب:", error);
-      }
-    }
-  };
+  }
+};
 
   useEffect(() => {
     fetchOrders();
@@ -43,32 +68,21 @@ const UserPage = () => {
       ) : (
         orders.map((order) => (
           <div key={order._id} className="order-card">
-{/* <div className="order-header">
-  <h3>طلب بتاريخ: {new Date(order.date).toLocaleString()}</h3>
-  {order.status !== "confirmed" && (
-    <button
-      className="delete-order-btn"
-      onClick={() => deleteOrder(order._id)}
-    >
-      حذف الطلب ✖
-    </button>
-  )}
-</div> */}
 
-<div className="order-header">
-  <h3>طلب بتاريخ: {new Date(order.date).toLocaleString()}</h3>
+          <div className="order-header">
+            <h3>طلب بتاريخ: {new Date(order.date).toLocaleString()}</h3>
 
-  {order.status === "confirmed" ? (
-    <span className="delivery-status">🚚 خارج للتوصيل</span>
-  ) : (
-    <button
-      className="delete-order-btn"
-      onClick={() => deleteOrder(order._id)}
-    >
-      حذف الطلب ✖
-    </button>
-  )}
-</div>
+            {order.status === "confirmed" ? (
+              <span className="delivery-status">🚚 خارج للتوصيل</span>
+            ) : (
+              <button
+                className="delete-order-btn"
+                onClick={() => deleteOrder(order._id)}
+              >
+                حذف الطلب ✖
+              </button>
+            )}
+          </div>
 
             <p>الاسم: {order.customer.name}</p>
             <p>العنوان: {order.customer.address}</p>
@@ -92,12 +106,11 @@ const UserPage = () => {
           </div>
         ))
       )}
+      <div>
+        <Logout />
+      </div>
     </div>
   );
 };
 
 export default UserPage;
-
-
-
-

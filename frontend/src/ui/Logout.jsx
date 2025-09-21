@@ -1,24 +1,33 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-
+  const handleLogout = () => {
+    localStorage.removeItem("userToken");
     localStorage.removeItem("adminToken");
-
-
-    setTimeout(() => {
-      navigate("/login");
-    }, 1500);
-  }, [navigate]);
+    navigate("/"); 
+  };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h2>جاري تسجيل الخروج...</h2>
-    </div>
+    <button
+      onClick={handleLogout}
+      style={{
+        marginTop: "20px",
+        padding: "10px 20px",
+        backgroundColor: "#e63946",
+        color: "#fff",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        fontSize: "16px",
+      }}
+    >
+      تسجيل الخروج
+    </button>
   );
 };
 
 export default Logout;
+
+

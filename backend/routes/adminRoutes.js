@@ -1,30 +1,32 @@
 import express from "express";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import Admin from "../models/Admin.js";
 
+dotenv.config();
 const router = express.Router();
 
-// ✅ بيانات المدير ثابتة
-const ADMIN_EMAIL = "assem@gmail.com";
-const ADMIN_PASSWORD = "123456789"; // ممكن تشفّره لو حبيت، لكن هنا ثابت
+const JWT_SECRET = process.env.JWT_SECRET || "secretkey";
 
-// ✅ تسجيل الدخول
+// ✅ Admin Login Route
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { phone, password } = req.body;
 
-    // ✅ تحقق من البريد وكلمة السر
-    if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
-      return res.status(400).json({ message: "البريد أو كلمة المرور غير صحيحة" });
-    }
+    const admin = await Admin.findOne({ phone });
+    if (!admin) return res.status(400).json({ message: "الأدمن غير موجود" });
 
-    // ✅ إنشاء JWT
-    const token = jwt.sign({ email: ADMIN_EMAIL }, "secretkey", { expiresIn: "1h" });
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) return res.status(400).json({ message: "كلمة المرور غير صحيحة" });
 
-    res.json({ message: "تم تسجيل الدخول بنجاح", token });
+    const token = jwt.sign({ id: admin._id, role: "admin" }, JWT_SECRET, { expiresIn: "7d" });
+
+    res.json({ message: "تم تسجيل دخول الأدمن", token, role: "admin" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Admin Login Error:", error);
+    res.status(500).json({ message: "خطأ في السيرفر" });
   }
 });
 
 export default router;
-

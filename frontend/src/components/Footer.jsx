@@ -1,4 +1,4 @@
-import { RxPerson } from "react-icons/rx";
+// import { RxPerson } from "react-icons/rx";
 import { FaFacebookF, FaInstagram, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ const Footer = () => {
   <div className="footer-container">
 <div className="footer-logo">
   <h2 className="footer-title">Dream Fit</h2>
-    <Link to="/admin">  <RxPerson /></Link>
+    {/* <Link to="/admin">  <RxPerson /></Link> */}
 </div>
 
     <div className="footer-social">

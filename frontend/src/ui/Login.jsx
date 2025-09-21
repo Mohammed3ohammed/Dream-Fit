@@ -10,26 +10,53 @@ const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    try {
-      const url = isRegister
-        ? "http://localhost:5000/api/auth/register"
-        : "http://localhost:5000/api/auth/login";
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-      const data = isRegister ? { name, phone, password } : { phone, password };
+  // ✅ تحقق قبل الإرسال
+  if (!phone || !password || (isRegister && !name)) {
+    alert("من فضلك أدخل جميع الحقول");
+    return;
+  }
 
-      const res = await axios.post(url, data);
-      alert(res.data.message);
+  try {
+    const url = isRegister
+      ? "http://localhost:5000/api/auth/register"
+      : "http://localhost:5000/api/auth/login";
 
-      if (!isRegister) {
+
+    const data = isRegister
+      ? { name, phone, password }
+      : { phone, password };
+
+    console.log("📤 إرسال البيانات:", data);
+
+    const res = await axios.post(url, data, {
+      headers: { "Content-Type": "application/json" }
+    });
+
+    console.log("✅ رد السيرفر:", res.data);
+
+    alert(res.data.message || "تم بنجاح");
+
+        if (res.data.token && res.data.role) {
+      localStorage.setItem("token", res.data.token);
+      // localStorage.setItem("role", res.data.role);
+
+      if (res.data.role === "admin") {
+        navigate("/admin");
+      } else {
         navigate("/user");
       }
-    } catch (err) {
-      alert(err.response?.data?.message || "حدث خطأ");
+    }else {
+      alert("الرد من السيرفر غير مكتمل");
     }
-  };
+  } catch (err) {
+    console.error("❌ Login/Register error:", err);
+    alert(err.response?.data?.message || "حدث خطأ غير متوقع");
+  }
+};
 
   return (
     <div className="login-container">

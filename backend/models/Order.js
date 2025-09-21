@@ -8,14 +8,21 @@ const orderSchema = new mongoose.Schema({
   },
   products: [
     {
-      id: { type: String, required: true },
+      id: String,
       name: String,
       price: Number,
       size: String,
       img: String,
-      images: [String]
+      images: [String],
+      _id: false
     }
   ],
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  status: {
+    type: String,
+    enum: ["pending", "confirmed"],
+    default: "pending"
+  },
   date: { type: Date, default: Date.now },
 });
 
